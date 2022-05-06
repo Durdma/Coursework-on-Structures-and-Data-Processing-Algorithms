@@ -13,6 +13,8 @@ string ChelValue::trimValue(const string& str) {
 
 
 
+
+
 string ChelValue::pasportCheck(string pasport) {
     regex regPasport("([0-9]{4})([\\-]{1})([0-9]{6})");
     pasport = trimValue(pasport);
@@ -26,6 +28,7 @@ string ChelValue::pasportCheck(string pasport) {
     }
     return pasport;
 }
+
 
 
 int ChelValue::yearCheck(int year) {
