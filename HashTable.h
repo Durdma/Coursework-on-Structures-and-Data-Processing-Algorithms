@@ -1,3 +1,4 @@
+// HashTable.h
 #pragma once
 #include <iostream>
 #include <cstdlib>
@@ -6,18 +7,20 @@
 #include <cmath>
 #include <fstream>
 #include <string>
-
 using namespace std;
 
 //	Структура  SIM карты
-struct SIM
-{
+struct SIM {
 	string nomerSIM ;
 	string tarif;
 	int vipusk;
-	  bool statusWork;
+	bool statusWork;
 
-	  SIM(string nomerSIM = "", string tarif = "", int vipusk = NULL, bool statusWork = false) {
+	  SIM(string nomerSIM = "", 
+		  string tarif = "", 
+		  int vipusk = NULL, 
+		  bool statusWork = false) 
+	  {
 		  this->nomerSIM = nomerSIM;
 		  this->tarif = tarif;
 		  this->vipusk = vipusk;
@@ -26,8 +29,7 @@ struct SIM
 };
 
 //	Структура ячейки хэш таблицы
-struct element
-{
+struct element {
 	SIM sim;
 	bool empty      =  1;   // пустой ли
 	bool deleted    =  0;   // удалён ли
@@ -36,33 +38,23 @@ struct element
 };
 
 
-class HashTable
-{
+class HashTable {
 public:
 	HashTable();
-	const int size = 500;					// размер таблицы
-	int sizeCount = 0;						// сколько уже элементов в таблице
+	const int size = 500;  // размер таблицы
+	int sizeCount = 0;     // сколько уже элементов в таблице
 
-	element* hashTable; // во избежания переполнения стека выделим память для массива структур в кучу;
-
+	element* hashTable;
 	int getHashOne(string key);
 	int getHashTwo(string key);
-	
-	
 	int  addKeyHashTable(SIM);
-	void  deleteObject(string deleteSIM);
+	bool  deleteObject(string deleteSIM);
 	SIM searchObjectKey(string key);
 	void allDelete();
-
-
 	void printHashTable();
-
 	bool findString(string s, string c);
-
 	void searchSimTarif(string str);
-
 	void switchTarif(string str); 
-
-	bool chekSIM(string key);  // ПРОВЕРКА СИМ КАРТЫ НА УНИКАЛЬНОСТЬ
+	bool chekSIM(string key); 
 };
 

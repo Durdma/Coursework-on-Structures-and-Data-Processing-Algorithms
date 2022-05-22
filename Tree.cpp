@@ -1,7 +1,6 @@
+// Tree.cpp
 #include "Tree.h"
-//  ÁÈÍÀĞÍÎÅ ÄÅĞÅÂÎ Ñ ÏĞßÌÛÌ ÎÁÕÎÄÎÌ
-
-
+//  ÄÅĞÅÂÎ Ñ ÏĞßÌÛÌ ÎÁÕÎÄÎÌ
 
 //	ÏÎËÓ×ÅÍÈÅ ÂÛÑÎÒÛ
 int Tree::height(node* p) {
@@ -10,27 +9,19 @@ int Tree::height(node* p) {
 
 }
 
-
-
 // ğàçíîñòü âûñîò ëåâîãî è ïğàâîãî ïîääåğåâüåâ
 int Tree::bfactor(node* p) {
-    
     return height(p->right) - height(p->left);
 }
 
-
-
-// âîññòàíàâëèâàåò êîğğåêòíîå çíà÷åíèå ïîëÿ height çàäàííîãî óçëà
 void Tree::fixHeight(node* p) {
-    
-    int heightLeft = height(p->left);   // ïîëó÷àåì çíà÷åíèÿ ÂÛÑÎÒÛ ëåâîãî óçëà
-    int heightRight = height(p->right); // ïîëó÷àåì çíà÷åíèÿ ÂÛÑÎÒÛ ïğàâîãî óçëà
+    int heightLeft = height(p->left);
+    int heightRight = height(p->right);
     if (heightLeft > heightRight)
         p->height = heightLeft + 1;
     else
         p->height = heightRight + 1;
 }
-
 
 //  ÏĞÀÂÛÉ ÏÎÂÎĞÎÒ ÂÎÊĞÓÃ Ğ
 node* Tree::rotateRight(node* p) {
@@ -42,8 +33,6 @@ node* Tree::rotateRight(node* p) {
     return q;
 }
 
-
-
 //  ËÅÂÛÉ ÏÎÂÎĞÎÒ ÂÎÊĞÓÃ Q
 node* Tree::rotateLeft(node* q) {
     node* p = q->right;
@@ -54,19 +43,15 @@ node* Tree::rotateLeft(node* q) {
     return p;
 }
 
-
-
 //  ÁÀËÀÍÑÈĞÎÂÊÀ ÓÇËÀ Ğ
 node* Tree::balance(node* p) {
     fixHeight(p);
-    if (bfactor(p) == 2)
-    {
+    if (bfactor(p) == 2) {
         if (bfactor(p->right) < 0)
             p->right = rotateRight(p->right);
         return rotateLeft(p);
     }
-    if (bfactor(p) == -2)
-    {
+    if (bfactor(p) == -2) {
         if (bfactor(p->left) > 0)
             p->left = rotateLeft(p->left);
         return rotateRight(p);
@@ -74,12 +59,9 @@ node* Tree::balance(node* p) {
     return p; // ÁÀËÀÍÑÈĞÎÂÊÀ ÍÅ ÍÓÆÍÀ
 }
 
-
 //  ÂÑÒÀÂÊÀ ÊËŞ×À K Â ÄÅĞÅÂÎ Ñ ÊÎĞÍÅÌ P
 node* Tree::insert(node* p, clientTree k) {
-
     if (!p) return new node(k);
-
     if (k.pasport < p->key.pasport)
         p->left = insert(p->left, k);
     else if (k.pasport > p->key.pasport) {
@@ -90,8 +72,6 @@ node* Tree::insert(node* p, clientTree k) {
     }
     return balance(p);
 }
-
-
 
 //  ÄÎÁÀÂÈÒÜ ÊËÈÅÍÒÀ
 void Tree::addKlitnt(clientTree k) {
@@ -112,29 +92,22 @@ void Tree::deleteKlient(string pasport) {
     }
 }
 
-
-
 //  ÏÎÈÑÊÀ ÓÇËÀ Ñ ÌÈÍÈÌÀËÜÍÛÌ ÊËŞ×ÎÌ Â ÏÎÄÄÅĞÅÂÅ P
 node* Tree::findMin(node* p) {
     return p->left ? findMin(p->left) : p;
 }
 
 
-
 //  ÓÄÀËÅÍÈÅ ÓÇËÀ Ñ ÌÈÍÈÌÀËÜÍÛÌ ÊËŞ×ÎÌ Â ÏÎÄÄÅĞÅÂÅ P
 node* Tree::removeMin(node* p) {
-    
     if (p->left == 0)
         return p->right;
     p->left = removeMin(p->left);
     return balance(p);
 }
 
-
-
 // ÓÄÀËÅÍÈÅ ÈÇ ÄÅĞÅÂÀ ÊËÈÅÍÒÀ ÏÎ ÑÒĞÎÊÅ ÏÀÑÏÎĞÒÀ
 node* Tree::remove(node* p, string k) {
-    
     if (!p) return 0;
     if (k < p->key.pasport)
         p->left = remove(p->left, k);
@@ -154,7 +127,6 @@ node* Tree::remove(node* p, string k) {
     return balance(p);
 }
 
-
 //  ÓÄÀËÅÍÈÅ ÂÑÅÃÎ ÄÅĞÅÂÀ
 void Tree::removeAll() {
     while ((root->left != NULL) && (root->right != NULL)) {
@@ -163,7 +135,6 @@ void Tree::removeAll() {
     delete root;
     root = NULL;
 }
-
 
 
 //  ÏÎÈÑÊ ÊËÈÅÍÒÀ Â ÄÅĞÅÂÅ ÏÎ ÑÒĞÎÊÅ ÏÀÑÏÎĞÒÀ
@@ -182,7 +153,16 @@ void Tree::findCustomer(node* p, string a) {
     }
 }
 
-
+void Tree::findCustomerLite(node* p, string a) {
+    if (p != NULL) {
+        if (p->key.pasport == a) {
+            cout << " ÔÈÎ: " << p->key.FIO << endl
+            << " Ïàñïîğò: " << p->key.pasport << endl;
+        }
+        findCustomerLite(p->left, a);
+        findCustomerLite(p->right, a);
+    }
+}
 
 //  ÏĞÎÂÅĞÊÀ ÅÑÒÜ ËÈ ÓÆÅ ÊËÈÅÍÒ Ñ ÒÀÊÈÌ ÏÀÑÏÎĞÒÎÌ
 bool Tree::checkPasport(string a, node* p) {
@@ -214,7 +194,6 @@ void Tree::minShow(node* p) {
     }
 }
 
-
 //  ÂÛÂÎÄ ÂÑÅÕ ÊËÈÅÍÒÎÂ
 void Tree::showKlient() {
     if (root == NULL) {
@@ -224,7 +203,6 @@ void Tree::showKlient() {
         minShow(root);
     }
 }
-
 
 //  ÏÎÈÑÊ ÊËÈÅÍÒÀ ÏÎ ÑÒĞÎÊÅ
 void Tree::findKlientOnString(node* p, string str, bool &chek) {
@@ -240,7 +218,6 @@ void Tree::findKlientOnString(node* p, string str, bool &chek) {
             findKlientOnString(p->right, str, chek);
         }
     }
-    
 }
 
 
@@ -254,7 +231,6 @@ bool Tree::findString(string str2, string str1) {
             if (str2[i + j] != str1[j]) {
                 break;
             }
-
         if (j == len1) {
             return true;
         }

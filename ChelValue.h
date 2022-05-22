@@ -1,3 +1,4 @@
+// ChelValue.h
 #pragma once
 #include <windows.h>
 #include <iostream>
@@ -5,13 +6,10 @@
 #include <locale.h>
 #include <string>
 #include <regex>
-
 using namespace std;
 
 class ChelValue {
-
 public:
-	
 	string inputBirthdayAndPlaces();
 	string inputFullDate();
 	string inputFIO();
@@ -21,13 +19,11 @@ public:
 	int inputYear();
 	string inputTarifSIM();
 	int inputMenu();
-	
 	string trimValue(const string& str);
 	string nameCheck(string name);
 	string pasportCheck(string pasport);
 	int yearCheck(int year);
 	string SIM_Check(string nomerSIM);
-	
 	bool chekDifferentDate(string, string);
 };
 

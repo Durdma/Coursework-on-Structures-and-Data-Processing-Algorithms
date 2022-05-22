@@ -1,3 +1,4 @@
+// Tree.h
 #pragma once
 #include <iostream>
 #include <cstdlib>
@@ -6,10 +7,7 @@
 #include <cmath>
 #include <fstream>
 #include <string>
-
 using namespace std;
-
-
 
 //  —“–” “”–¿ ¬À¿ƒ≈À‹÷¿ —»Ã  ¿–“€ ’–¿ÕﬂŸ≈√Œ—ﬂ ¬ ƒ≈–≈¬≈
 struct clientTree {
@@ -28,8 +26,6 @@ struct clientTree {
     }
 };
 
-
-
 //  —“–” “”–¿ ”«À¿ ƒ≈–≈¬¿
 struct node {
     clientTree key;
@@ -44,41 +40,27 @@ struct node {
     }
 };
 
-
-
-
 class Tree {
 public:
-
     int height(node* p);
     int bfactor(node* p);
     void fixHeight(node* p);
-
     node* root = NULL;
-
-
     node* rotateRight(node* p);
     node* rotateLeft(node* p);
     node* balance(node* p);
-    
     void addKlitnt(clientTree k);
     void deleteKlient(string pasport);
-
-
     node* insert(node* p, clientTree k);
     node* findMin(node* p);
-    
     node* removeMin(node* p);
     node* remove(node* p, string k);
     void removeAll();
-
     void findCustomer(node* p, string a);
-    
+    void findCustomerLite(node* p, string a);
     bool checkPasport(string a, node* p);
-
     void showKlient();
     void minShow(node* p);
-
     void findKlientOnString(node* p, string str, bool& chek);
     bool findString(string s, string c);
 };

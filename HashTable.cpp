@@ -1,32 +1,25 @@
+// HashTable.cpp
 #include "HashTable.h"
 // ХЭШ ТАБЛИЦА С ДВОЙНЫМ ХЭШИРОВАНИЕМ
-
 
 //	КОСТРУКТОР ХЭШ-ТАБЛИЦЫ
 HashTable::HashTable() {
 	hashTable = new element[500];
 }
 
-
-
 //	ОСНОВНАЯ ХЭШ-ФУНКЦИЯ
-int HashTable::getHashOne(string key)
-{
+int HashTable::getHashOne(string key) {
 	const double temp = 3.349051;
 	int index = 0;
 	index = (int)(((int)key[0]) + ((int)key[1]) * temp + ((int)key[2]) * pow(temp, 2) + ((int)key[3]) * pow(temp, 3) + ((int)key[4]) * pow(temp, 4) 
 		+ ((int)key[5]) * pow(temp, 5)) * temp + ((int)key[6]) * pow(temp, 6) + ((int)key[7]) * pow(temp, 7)
 		+ ((int)key[8]) * pow(temp, 8) + ((int)key[9]) * pow(temp, 9) + ((int)key[10]) * pow(temp, 10);
-
 	return (index % 500);
 }
 
 
-
-//	ВСПОМОГАТЕЛЬНАЯ ХЭШ-ФУНКЦИЯ     
-//  Принцип как у основной, но с добавлением единицы и делением с остатком от размера массива во избежание нулевого шага
-int HashTable::getHashTwo(string key)
-{
+//	ВСПОМОГАТЕЛЬНАЯ ХЭШ-ФУНКЦИЯ 
+int HashTable::getHashTwo(string key) {
 	const double temp = 2.393051;
 	int index = 0;
 	index = (int)(((int)key[0]) + ((int)key[1]) * temp + ((int)key[2]) * pow(temp, 2) + ((int)key[3]) * pow(temp, 3) +
@@ -41,14 +34,10 @@ int HashTable::getHashTwo(string key)
 }
 
 
-
-//	ДОБАВЛЕНИЕ СТРУКТУРЫ СИМ КАРТЫ
-int HashTable::addKeyHashTable(SIM sim)
-{
+int HashTable::addKeyHashTable(SIM sim) {
 	bool check = false;
-	if (size - sizeCount < 1)
-	{
-		return 0; // ключей больше чем мест под них
+	if (size - sizeCount < 1) {
+		return 0;
 	}
 
 	element object;
@@ -56,30 +45,25 @@ int HashTable::addKeyHashTable(SIM sim)
 	object.sim = sim;
 	object.pos = getHashOne(object.sim.nomerSIM);
 	
-	if (hashTable[object.pos].deleted == 1)
-	{
+	if (hashTable[object.pos].deleted == 1) {
 		hashTable[object.pos] = object;
 		hashTable[object.pos].deleted = 0;
 		hashTable[object.pos].empty = 0;
 		hashTable[object.pos].collisions++;
 		check = true;
 	}
-	else if (hashTable[object.pos].empty == 1 && hashTable[object.pos].deleted == 0)
-	{
+	else if (hashTable[object.pos].empty == 1 && hashTable[object.pos].deleted == 0) {
 		hashTable[object.pos] = object;
 		hashTable[object.pos].empty = 0;
 		check = true;
 	}
-	else
-	{
+	else {
 		
-		for (int i = 0; i < size; i++)
-		{
+		for (int i = 0; i < size; i++) {
 			int h1 = getHashOne(hashTable[object.pos].sim.nomerSIM);
 			int h2 = getHashTwo(hashTable[object.pos].sim.nomerSIM);
 			object.pos = (h1 + h2) % size;
-			if (hashTable[object.pos].empty == 1 && hashTable[object.pos].deleted == 0)
-			{
+			if (hashTable[object.pos].empty == 1 && hashTable[object.pos].deleted == 0) {
 				hashTable[object.pos] = object;
 				hashTable[object.pos].empty = 0;
 				check = true;
@@ -90,24 +74,22 @@ int HashTable::addKeyHashTable(SIM sim)
 
 	if (check) {
 		sizeCount++;
-	}else {
+	} 
+	else {
 		cout << " Не удалось добавить ключ\n";
 	}
 	return 1;
 }
 
 
-
-
-//	ПОИСК ПО НОМЕР СИМ КАРТЫ
+//	ПОИСК ПО НОМЕР КАРТЫ
 SIM HashTable::searchObjectKey(string key) {
 	int count = 0;
 	int h1 = getHashOne(key);
 	int h2 = getHashTwo(key);
 
 	for (int i = 0; i < size; i++) {
-		if (hashTable[h1].sim.nomerSIM == key)
-		{
+		if (hashTable[h1].sim.nomerSIM == key) {
 			return hashTable[h1].sim;
 		}
 		else {
@@ -128,17 +110,11 @@ SIM HashTable::searchObjectKey(string key) {
 	}
 }
 
-
-
-
-
 //  ВЫВОД ХЭШ-ТАБЛИЦЫ
-void HashTable::printHashTable()
-{
+void HashTable::printHashTable() {
 	cout << setw(15) << " Номер" << setw(15) << "Тариф" << setw(15) << "Год" << setw(15) << "Статус" << '\n';
 	bool chek = true;
-	for (int i = 0; i < size; i++)
-	{
+	for (int i = 0; i < size; i++) {
 		if (hashTable[i].sim.nomerSIM != "") {
 			chek = false;
 			string status = hashTable[i].sim.statusWork ? "выдана" : "невыдана";
@@ -149,7 +125,6 @@ void HashTable::printHashTable()
 		cout << setw(15) << " База SIM карты путса..." << endl;
 	}
 }
-
 
 //  УДАЛЕНИЕ ВСЕЙ ТАБЛИЦЫ
 void HashTable::allDelete() {
@@ -169,7 +144,7 @@ void HashTable::allDelete() {
 
 
 //	УДАЛЕНИЕ ПО КЛЮЧУ
-void HashTable::deleteObject(string deleteSIM) {
+bool HashTable::deleteObject(string deleteSIM) {
 	int count = 0;
 	int h1 = getHashOne(deleteSIM);
 	int h2 = getHashTwo(deleteSIM);
@@ -202,7 +177,9 @@ void HashTable::deleteObject(string deleteSIM) {
 	}
 	if (count == 0) {
 		cout << " Совпадений не найдено\n";
+		return false;
 	}
+	return true;
 }
 
 
@@ -222,25 +199,20 @@ bool HashTable::findString(string str2, string str1) {
 			return true;
 		}	
 	}
-
 	return false;
 }
 
 
-
-
 void HashTable::searchSimTarif(string str) {
 	bool chek = false;
-	for (int i = 0; i < size; i++)
-	{
+	for (int i = 0; i < size; i++) {
 		if (findString(hashTable[i].sim.tarif, str)) {
 			chek = true;
 		}
 	}
 	if(chek) {
 		cout << setw(15) << " Номер" << setw(15) << "Тариф" << setw(15) << "Год" << setw(15) << '\n';
-		for (int i = 0; i < size; i++)
-		{
+		for (int i = 0; i < size; i++) {
 			if (findString(hashTable[i].sim.tarif, str)) {
 				cout << setw(15) << hashTable[i].sim.nomerSIM << setw(15) << hashTable[i].sim.tarif << setw(15) << hashTable[i].sim.vipusk << setw(15) << '\n';
 			}
@@ -258,8 +230,7 @@ void HashTable::switchTarif(string key) {
 	int h2 = getHashTwo(key);
 
 	for (int i = 0; i < size; i++) {
-		if (hashTable[h1].sim.nomerSIM == key)
-		{
+		if (hashTable[h1].sim.nomerSIM == key) {
 			hashTable[h1].sim.statusWork = !hashTable[h1].sim.statusWork;
 			break;
 		}

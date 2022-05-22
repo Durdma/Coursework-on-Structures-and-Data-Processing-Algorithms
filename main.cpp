@@ -1,3 +1,4 @@
+// maim.cpp
 #include <iostream>
 #include <string>
 #include <cstdlib>
@@ -227,19 +228,23 @@ int main() {
 			cout << " Удаление сведения о SIM-карте\n" << endl;
 
 			string nomerSIM = Chek.inputSIM();
-			Table.deleteObject(nomerSIM);
+			if (Table.deleteObject(nomerSIM)) {
 
-			cout << " Введите дату удаления SIM карты: ";
-			string data = Chek.inputFullDate();
+				cout << " Введите дату удаления SIM карты: ";
+				string data = Chek.inputFullDate();
 
-			for (int i = 0; i < MList.GetSize(); i++)
-			{
-				if (MList[i].nomerSim == nomerSIM && MList[i].endSrok == "")
+				for (int i = 0; i < MList.GetSize(); i++)
 				{
-					MList[i].endSrok = data;
+					if (MList[i].nomerSim == nomerSIM && MList[i].endSrok == "")
+					{
+						MList[i].endSrok = data;
+						cout << " SIM-карта возвращена у клиента:" << endl;
+						MTree.findCustomerLite(MTree.root, MList[i].pasport);
+					}
 				}
 			}
-			cout << "\n";
+				cout << "\n";
+			
 			system("pause");
 		}
 
@@ -429,7 +434,7 @@ int main() {
 			MTree.addKlitnt(clientAdd);
 			
 			
-			string pasport1 = "1234-123456";
+			string pasport1 = "2234-123456";
 			string placeAndDate1 = "Ростов-на-Дону 20.12.2016";
 			string FIO1 = "Гулов Георгий Витальевич";
 			int birthyear1 = 2002;
@@ -446,7 +451,7 @@ int main() {
 			MTree.addKlitnt(clientAdd6);
 
 
-			string pasport2 = "2234-123456";
+			string pasport2 = "4321-123456";
 			string  placeAndDate2 = "Шахты 20.12.2016";
 			string FIO2 = "Лысенко Денис Вячеславович";
 			int birthyear2 = 2002;
@@ -465,7 +470,7 @@ int main() {
 
 				string n1 = "321-9876543";
 				string t1 = "средний";
-				int v1 = 2022;
+				int v1 = 2020;
 				bool b1 = false;
 				SIM s1(n1, t1, v1, b1);
 				Table.addKeyHashTable(s1);
@@ -480,7 +485,7 @@ int main() {
 
 				string n3 = "987-1111111";
 				string t3 = "полный";
-				int v3 = 2022;
+				int v3 = 2021;
 				bool b3 = false;
 				SIM s3(n3, t3, v3, b3);
 				Table.addKeyHashTable(s3);
